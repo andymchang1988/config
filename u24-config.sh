@@ -3,7 +3,7 @@ set -e
 
 # Update and install prerequisites
 echo "Updating package list and installing prerequisites..."
-sudo apt update
+sudo apt update && sudo apt dist-upgrade -y
 if snap list | grep -q codium; then
     echo "VSCodium is already installed via snap. Skipping installation."
 elif snap find codium &>/dev/null; then
@@ -82,6 +82,32 @@ else
     exit 1
 fi
 
+### Set System to Dark Mode ###
+
+# Set GNOME or Cinnamon to dark mode if available
+if [ "$(gsettings get org.gnome.desktop.interface gtk-theme)" != "Adwaita-dark" ]; then
+    echo "Setting system to dark mode..."
+    sudo -u $SUDO_USER gsettings set org.gnome.desktop.interface gtk-theme "Adwaita-dark" || { echo "Failed to set dark mode. Please check the settings availability."; }
+else
+    echo "System is already in dark mode."
+fi
+
+### Import Bookmarks into Firefox ###
+
+# Import bookmarks from GitHub repository into Firefox
+BOOKMARK_URL="https://raw.githubusercontent.com/andymchang1988/config/main/bm.html"
+BOOKMARK_FILE="/tmp/bm.html"
+
+wget -O "$BOOKMARK_FILE" "$BOOKMARK_URL" || { echo "Failed to download bookmarks from $BOOKMARK_URL."; exit 1; }
+
+if [ -f "$BOOKMARK_FILE" ]; then
+    echo "Importing bookmarks into Firefox..."
+    sudo -u $SUDO_USER sudo -u $SUDO_USER firefox --no-remote --new-instance --import-bookmarks "$BOOKMARK_FILE" || { echo "Failed to import bookmarks into Firefox. Please check for issues."; exit 1; }
+    rm "$BOOKMARK_FILE"
+else
+    echo "Bookmark file not found. Please check the download."
+    exit 1
+fi
+
 ### Final Message ###
 echo "Installation of GitHub Desktop, Slack, Teams for Linux, VSCodium, and GRUB update is complete!"
-
