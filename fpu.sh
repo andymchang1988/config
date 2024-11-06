@@ -24,10 +24,15 @@ log "Detected OS: $OS, Version: $VERSION"
 
 # Step 2: Install updates, upgrades, and system packages
 log "Updating the package list and upgrading the system."
-if [ "$OS" == "ubuntu" ] || [ "$OS" == "debian" ]; then
+if [ "$OS" == "ubuntu" ] || [ "$OS" == "debian" ] || [ "$OS" == "pop" ]; then
     sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y || log_error "Failed to update and upgrade packages on $OS."
     sudo apt install -y neofetch || log_error "Failed to install neofetch."
     sudo apt install -y flatpak || log_error "Failed to install flatpak."
+    
+    if [ "$OS" == "pop" ]; then
+        sudo apt install -y pop-desktop || log_error "Failed to ensure Pop!_OS desktop environment packages."
+    fi
+
     sudo apt install -y ubuntu-restricted-extras || log_error "Failed to install third-party media drivers."
 elif [ "$OS" == "fedora" ]; then
     sudo dnf upgrade -y || log_error "Failed to upgrade packages on $OS."
