@@ -28,7 +28,7 @@ if [ "$OS" == "ubuntu" ] || [ "$OS" == "debian" ] || [ "$OS" == "pop" ]; then
     sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y || log_error "Failed to update and upgrade packages on $OS."
     sudo apt install -y neofetch || log_error "Failed to install neofetch."
     sudo apt install -y flatpak || log_error "Failed to install flatpak."
-    
+
     if [ "$OS" == "pop" ]; then
         sudo apt install -y pop-desktop || log_error "Failed to ensure Pop!_OS desktop environment packages."
     fi
@@ -54,7 +54,7 @@ log "Setting up Flathub repository for Flatpak."
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || log_error "Failed to add Flathub repository."
 
 # Step 4: Verify if required applications are available on Flathub and install them
-declare -a flatpak_apps=("org.chromium.Chromium" "com.vscodium.codium" "org.freedesktop.Solaar" "com.spotify.Client" "com.getportal.Portal" "io.github.shiftey.Desktop")
+declare -a flatpak_apps=("org.chromium.Chromium" "com.visualstudio.code" "com.slack.Slack" "com.github.IsmaelMartinez.teams_for_linux" "io.github.pwr_solaar.solaar" "com.github.iwalton3.jellyfin-media-player" "com.spotify.Client" "io.github.shiftey.Desktop")
 
 log "Checking for required Flatpak applications on Flathub."
 for app in "${flatpak_apps[@]}"; do
