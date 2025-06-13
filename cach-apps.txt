@@ -1,0 +1,10 @@
+# AUR packages to install
+github-desktop
+minecraft-launcher
+opera
+mixxx
+powertop
+teams
+vscodium
+tailscale
+spotify
