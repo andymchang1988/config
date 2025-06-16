@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+###################################################################
+###################### SUDO CHECK #################################
+###################################################################
 set -euo pipefail
 
 if [[ "$(id -u)" -ne 0 ]]; then
@@ -6,6 +9,9 @@ if [[ "$(id -u)" -ne 0 ]]; then
   exit 1
 fi
 
+###################################################################
+###################### VIM/VI FIX #################################
+###################################################################
 
 echo "🚀 Resetting Vim and Vi configurations..."
 
@@ -53,28 +59,29 @@ else
     echo "✅ Full Vim installation detected."
 fi
 
+###################################################################
+################## CHANGE MSF USER AND PASSWORDS ##################
+###################################################################
+
 USER_HOME=$(eval echo "~$SUDO_USER")
 YAY_DIR="/opt/yay"
 MSF_DB_USER="nope-mfs"
-MSF_DB_PASS="mfcons2025!1"
-MSF_DB_NAME="msf_database"
-LIMINE_CFG="/boot/limine.cfg"
+MSF_DB_PASS="#@%!^@#&#$%PASSWORDS@#!%!^##"
+MSF_DB_NAME="msfdb"
+LIMINE_CFG="/boot/limine.conf"
 KERNEL_PARAM="i915.enable_dpcd_backlight=3"
+
+
+
+###################################################################
+################## CONFIGURING PACKAGES AND APPS ##################
+###################################################################
 
 echo "[*] Installing base-devel and git..."
 pacman -Sy --noconfirm base-devel git
 
-echo "[*] Cleaning and preparing yay directory..."
-rm -rf "$YAY_DIR"
-mkdir -p "$YAY_DIR"
-chown -R "$SUDO_USER:$SUDO_USER" "$YAY_DIR"
-
-echo "[*] Installing yay as $SUDO_USER..."
-sudo -u "$SUDO_USER" bash <<EOF
-cd "$YAY_DIR"
-git clone https://aur.archlinux.org/yay.git .
-makepkg -si --noconfirm
-EOF
+echo "Installing yay"
+pacman -S --noconfirm yay
 
 echo "[*] Installing packages via yay as $SUDO_USER..."
 sudo -u "$SUDO_USER" yay -Sy --noconfirm \
@@ -94,6 +101,12 @@ fi
 
 echo "[*] Enabling and starting PostgreSQL..."
 systemctl enable --now postgresql
+
+
+
+###################################################################
+################## CONFIGURING METASPLOIT AND DB ##################
+###################################################################
 
 echo "[*] Creating PostgreSQL user and Metasploit database..."
 sudo -u postgres psql <<EOF
@@ -125,6 +138,11 @@ production:
   timeout: 5
 EOF
 chown -R "$SUDO_USER:$SUDO_USER" "$MSF_CFG_DIR"
+
+
+###################################################################
+################## CONFIGURING SSH KEYS AND CONF ##################
+###################################################################
 
 echo "[*] Creating SSH key for $SUDO_USER if not already present..."
 SSH_KEY="$USER_HOME/.ssh/id_rsa"
