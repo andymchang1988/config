@@ -51,6 +51,12 @@ set -e
 
 echo "Preparing MediaBox installation..."
 
+# Set non-interactive mode
+export DEBIAN_FRONTEND=noninteractive
+
+# Configure debconf to avoid interactive prompts
+echo 'initramfs-tools initramfs-tools/update_initramfs boolean false' | debconf-set-selections
+
 # Stop any existing services
 systemctl stop mediabox-launcher 2>/dev/null || true
 systemctl disable mediabox-launcher 2>/dev/null || true
@@ -69,6 +75,9 @@ INSTALL_DIR="/opt/mediabox"
 HOSTNAME="mbox"
 
 echo "Configuring MediaBox system..."
+
+# Set non-interactive mode
+export DEBIAN_FRONTEND=noninteractive
 
 # Create mediabox user if it doesn't exist
 if ! id "$MEDIABOX_USER" &>/dev/null; then
