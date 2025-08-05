@@ -6,7 +6,7 @@ sudo apt update && sudo apt full-upgrade -y
 
 
 echo "[*] Downloading and installing Pegasus frontend..."
-wget https://github.com/mmatyas/pegasus-frontend/releases/latest/download/pegasus-fe_rpi3.armhf.deb -O pegasus.deb
+wget https://github.com/mmatyas/pegasus-frontend/releases/download/weekly_2023w49/pegasus-fe_rpi4.armhf.deb -O pegasus.deb
 sudo dpkg -i pegasus.deb || sudo apt install -f -y
 
 echo "[*] Installing core packages..."
