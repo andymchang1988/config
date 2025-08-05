@@ -4,12 +4,16 @@ set -e
 echo "[*] Updating system..."
 sudo apt update && sudo apt full-upgrade -y
 
+
+echo "[*] Downloading and installing Pegasus frontend..."
+wget https://github.com/mmatyas/pegasus-frontend/releases/latest/download/pegasus-fe_rpi3.armhf.deb -O pegasus.deb
+sudo dpkg -i pegasus.deb || sudo apt install -f -y
+
 echo "[*] Installing core packages..."
 sudo apt install -y \
   lightdm xinit x11-xserver-utils \
   matchbox-window-manager zenity whiptail \
   chromium-browser steamlink \
-  pegasus-frontend \
   python3-pip python3-evdev \
   bluetooth bluez blueman \
   git curl unzip xdotool wmctrl
