@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Vim Vi fix. This links `vi` to use `vim` in cases like `vi test.txt`"
+sudo pacman -S vim vim-runtime --noconfirm
 
 echo "🚀 Resetting Vim and Vi configurations..."
 
